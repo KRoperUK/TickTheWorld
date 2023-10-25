@@ -22,10 +22,10 @@ title: TickTheWorld
 email: 
 description: >- # this means to ignore newlines until "baseurl:"
   A site to mark which countries you have visited.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://kroper.uk/TickTheWorld" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/TickTheWorld" # the subpath of your site, e.g. /blog
+url: "https://kroper.uk/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 
-github_username:  
+github_username: KRoperUK
 
 # Build settings
 theme: minima
