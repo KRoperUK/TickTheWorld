@@ -41,7 +41,7 @@
     document.getElementById("mapColor").addEventListener("change", function() {
         selectedColor = document.getElementById("mapColor").value.replace("#", "");
         window.history.pushState("object or string", "Title", "/TickTheWorld/" + buildQueryString());
-        reDraw();
+        location.reload();
     });
 
     // document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
