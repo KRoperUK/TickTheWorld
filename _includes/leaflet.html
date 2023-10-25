@@ -6,7 +6,8 @@
 <hr />
 <br />
 
-<h3><a id="customLinkA" href="javascript:linkToClip();">Get Your Custom Link</a></h3>
+<h3><a id="customLinkA">Get Your Custom Link</a></h3>
+<span id="mapLink"></span>
 <h3><a href="/TickTheWorld/">Reset</a></h3>
 
 <style>
@@ -61,22 +62,6 @@
     // }).addTo(map);
 
     Stadia_AlidadeSmooth.addTo(map);
-
-    function linkToClip() {
-        // Get the text field
-        var copyText = "https://kroper.uk/TestTheWorld/" + buildQueryString();
-
-        // Select the text field
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
-
-        // Alert the copied text
-        alert("Copied the text: " + copyText.value);
-    }
-    
 
     function buildQueryString() {
         var queryString = "?";
@@ -134,6 +119,8 @@
         geoJSON = L.geoJSON(countries, {
             onEachFeature: onEachFeature
         }).addTo(map);
+        document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
+        document.getElementById("mapLink").innerText = "https://kroper.uk/TickTheWorld/" + buildQueryString();
     }
     
 </script>
