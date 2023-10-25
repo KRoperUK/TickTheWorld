@@ -25,7 +25,7 @@
         countriesVisited.push(key);
     });
 
-    document.getElementById("customLinkA").href = "/" + buildQueryString();
+    document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
     
     document.body.style.zoom = 1.0000001;
     setTimeout(function(){document.body.style.zoom = 1;},50); //allow some time to flush the css buffer.
@@ -58,7 +58,7 @@
             });
         }
         window.history.pushState("object or string", "Title", "/" + buildQueryString());
-        document.getElementById("customLinkA").href = "/" + buildQueryString();
+        document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
     }
 
     function onEachFeature(feature, layer) {
