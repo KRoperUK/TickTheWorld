@@ -1,10 +1,13 @@
 <div id="map" style="height: 75vh; width: 100%;">
 
 </div>
+<input type="color" id="mapColor" name="mapColor" value="#34495e" />
 
 <hr />
+<br />
 
-<span id="customLinkSpan" style="height: 2vh; width: 100%;"><a id="customLinkA">Get Your Custom Link</a></span>
+<h3><a id="customLinkA">Get Your Custom Link</a></h3>
+<h3><a href="/TickTheWorld/">Reset</a></h3>
 
 <style>
     .wrapper {
@@ -16,13 +19,28 @@
     var countries = {{ site.data.countries | jsonify }};
     var countriesVisited = [];
 
-    const selectedColor = "#ff0000";
+    var selectedColor = "34495e";
 
     const urlS = new URLSearchParams(window.location.search);
 
     urlS.forEach(function(value, key) {
-        console.log(key, value);
-        countriesVisited.push(key);
+        if (value == "Y") {
+            console.log(key, value);
+            countriesVisited.push(key);
+        } else {
+            if (key="color") {
+                value = "#" + value;
+                console.log("Set color to: " + value);
+                selectedColor = value;
+                document.getElementById("mapColor").value = value;
+            }
+        }
+    });
+
+    document.getElementById("mapColor").addEventListener("change", function() {
+        selectedColor = document.getElementById("mapColor").value.replace("#", "");
+        window.history.pushState("object or string", "Title", "/TickTheWorld/" + buildQueryString());
+        reDraw();
     });
 
     document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
@@ -30,10 +48,34 @@
     document.body.style.zoom = 1.0000001;
     setTimeout(function(){document.body.style.zoom = 1;},50); //allow some time to flush the css buffer.
     var map = L.map('map').setView([45,0], 3);
+
+    var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
+        minZoom: 0,
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png'
+    });
     
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
+
+    Stadia_AlidadeSmooth.addTo(map);
+
+    function myFunction() {
+        // Get the text field
+        var copyText = document.getElementById("myInput");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        // Alert the copied text
+        alert("Copied the text: " + copyText.value);
+    }
     
 
     function buildQueryString() {
@@ -41,7 +83,7 @@
         for (const country in countriesVisited) {
             queryString += countriesVisited[country] + "=Y&";
         }
-        return queryString.slice(0, -1);
+        return queryString + "color=" + selectedColor.replace("#", "");
     }
 
     function countryClicked(e) {
@@ -54,17 +96,27 @@
             countriesVisited.push(e.target.feature.properties["ISO_A3"]);
             console.log(e.target.feature.properties["ISO_A3"]);
             e.target.setStyle({
-                fillColor: selectedColor
+                fillColor: selectedColor,
+                fillOpacity: 1
             });
         }
         window.history.pushState("object or string", "Title", "/TickTheWorld/" + buildQueryString());
         document.getElementById("customLinkA").href = "/TickTheWorld/" + buildQueryString();
+        reDraw();
     }
 
     function onEachFeature(feature, layer) {
         if (countriesVisited.includes(feature.properties["ISO_A3"])) {
             layer.setStyle({
-                fillColor: selectedColor
+                fillColor: selectedColor,
+                fillOpacity: 0.5,
+                color: null
+            });
+        } else {
+            layer.setStyle({
+                color: null,
+                fillColor: null,
+                fillOpacity: 0
             });
         }
         layer.on({
@@ -75,5 +127,13 @@
     geoJSON = L.geoJSON(countries, {
         onEachFeature: onEachFeature
     }).addTo(map);
+
+    function reDraw() {
+        geoJSON.remove();
+        delete geoJSON;
+        geoJSON = L.geoJSON(countries, {
+            onEachFeature: onEachFeature
+        }).addTo(map);
+    }
     
 </script>
