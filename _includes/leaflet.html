@@ -1,9 +1,11 @@
 <div id="map" style="height: 75vh; width: 100%;">
 
 </div>
-<input type="color" id="mapColor" name="mapColor" value="#34495e" />
 
 <hr />
+<br />
+<h3 style="display: flex; align-items: center;">Colour <input type="color" style="height: 5vh; width: 5vw;" id="mapColor" name="mapColor" value="#34495e" /></h3>
+
 <br />
 
 <h3><a id="customLinkA">Get Your Custom Link</a></h3>
@@ -49,6 +51,13 @@
     document.body.style.zoom = 1.0000001;
     setTimeout(function(){document.body.style.zoom = 1;},50); //allow some time to flush the css buffer.
     var map = L.map('map').setView([45,0], 3);
+    
+    const corner1 = L.latLng(-180, -180);
+    const corner2 = L.latLng(180, 180);
+    bounds = L.latLngBounds(corner1, corner2);
+    map.setMaxBounds(bounds);
+    map.setMaxZoom(7);
+    map.setMinZoom(3); // To limit API usage
 
     var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
         minZoom: 0,
