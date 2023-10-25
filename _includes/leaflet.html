@@ -6,7 +6,7 @@
 <hr />
 <br />
 
-<h3><a id="customLinkA">Get Your Custom Link</a></h3>
+<h3><a id="customLinkA" href="javascript:copyLink();">Get Your Custom Link</a></h3>
 <h3><a href="/TickTheWorld/">Reset</a></h3>
 
 <style>
@@ -62,9 +62,9 @@
 
     Stadia_AlidadeSmooth.addTo(map);
 
-    function myFunction() {
+    function copyLink() {
         // Get the text field
-        var copyText = document.getElementById("myInput");
+        var copyText = "https://kroper.uk/TestTheWorld/" + buildQueryString();
 
         // Select the text field
         copyText.select();
